@@ -12,6 +12,8 @@ header {
 
 #divBusca {
   border-radius: 5px;
+  display: inline-block;
+  border: solid;
 }
 
 #txtBusca {

@@ -54,7 +54,7 @@ async function createPost(posts) {
 
   for (const post of posts) {
     const newArticle = document.createElement("article");
-    const newTitle = document.createElement("h3");
+    const newTitle = document.createElement("h1");
     const newPostBody = document.createElement("p");
 
     newArticle.classList.add("post");
@@ -111,6 +111,40 @@ async function createPost(posts) {
   }
 }
 
+function clearPosts() {
+  const areaPosts = document.getElementById("areaPosts");
+
+  while (areaPosts.firstChild) {
+    areaPosts.removeChild(areaPosts.firstChild);
+  }
+}
+
+const newPostBtn = document.getElementById("btnAdicionarPost");
+
+newPostBtn.addEventListener("click", () => {
+  const newPostText = document.getElementById("txtNovoPost").value;
+
+  if (newPostText.trim() !== "") {
+    const newPost = {
+      title: "Novo Post",
+      body: newPostText,
+      createdAt: new Date().toISOString(),
+      likes: [],
+      comments: [],
+    };
+
+    clearPosts();
+
+    allPosts.unshift(newPost);
+
+    document.getElementById("txtNovoPost").value = "";
+
+    createPost(allPosts);
+  } else {
+    alert("Por favor, insira um texto para o novo post!");
+  }
+});
+
 const searchIpt = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchButton");
 
@@ -120,13 +154,13 @@ searchBtn.addEventListener("click", () => {
 });
 
 function searchPostsByTitle(searchTerm) {
-  const postTitleElement = document.querySelectorAll("h3");
+  const postElements = document.querySelectorAll("h1");
   let found = false;
   let count = 0;
 
-  postTitleElement.forEach((titleElement) => {
+  postElements.forEach((titleElement) => {
     const postTitle = titleElement.textContent?.toLowerCase();
-    const postElement = titleElement.parentElement;
+    const postElement = titleElement.closest(".post");
 
     if (postTitle?.includes(searchTerm.toLowerCase())) {
       postElement.style.display = "block";
@@ -138,10 +172,12 @@ function searchPostsByTitle(searchTerm) {
   });
 
   const noPostsFoundElement = document.getElementById("noPostsFound");
-  if (!found) {
-    noPostsFoundElement.style.display = "block";
-  } else {
-    noPostsFoundElement.style.display = "none";
+  if (noPostsFoundElement) {
+    if (!found) {
+      noPostsFoundElement.style.display = "block";
+    } else {
+      noPostsFoundElement.style.display = "none";
+    }
   }
 
   const searchResultElement = document.getElementById("searchResult");
