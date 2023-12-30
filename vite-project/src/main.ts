@@ -36,31 +36,34 @@ async function fetchPosts() {
   return posts;
 }
 
+let allPosts = [];
+
 fetchUsers().then((users) => {
   console.log("Dados dos usuários:", users);
 });
 
 fetchPosts().then((posts) => {
-  console.log("Dados dos posts:", posts);
-  createPost(posts);
+  allPosts = posts;
+  createPost(allPosts);
 });
 
 async function createPost(posts) {
   const areaPosts = document.getElementById("areaPosts");
 
-  const users = await fetchUsers(); // Obtendo os dados dos usuários
+  const users = await fetchUsers();
 
   for (const post of posts) {
     const newArticle = document.createElement("article");
     const newTitle = document.createElement("h3");
     const newPostBody = document.createElement("p");
-    const createdDate = document.createElement("footer");
-    const likeCount = document.createElement("footer");
 
     newArticle.classList.add("post");
 
     newTitle.textContent = post.title;
     newPostBody.textContent = post.body;
+
+    const createdDate = document.createElement("p");
+    const likeCount = document.createElement("p");
 
     const postDate = new Date(post.createdAt);
     createdDate.textContent = `Created at: ${postDate.toLocaleString()}`;
@@ -74,7 +77,7 @@ async function createPost(posts) {
       const commentBody = document.createElement("p");
       const commentDate = document.createElement("span");
 
-      const user = users.find((user) => user.id === comment.userId); // Encontrando o usuário pelo ID
+      const user = users.find((user) => user.id === comment.userId);
 
       if (user) {
         const commentUser = document.createElement("div");
@@ -105,5 +108,44 @@ async function createPost(posts) {
     newArticle.appendChild(commentsSection);
 
     areaPosts.appendChild(newArticle);
+  }
+}
+
+const searchIpt = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchButton");
+
+searchBtn.addEventListener("click", () => {
+  const searchTerm = searchIpt.value;
+  searchPostsByTitle(searchTerm);
+});
+
+function searchPostsByTitle(searchTerm) {
+  const postTitleElement = document.querySelectorAll("h3");
+  let found = false;
+  let count = 0;
+
+  postTitleElement.forEach((titleElement) => {
+    const postTitle = titleElement.textContent?.toLowerCase();
+    const postElement = titleElement.parentElement;
+
+    if (postTitle?.includes(searchTerm.toLowerCase())) {
+      postElement.style.display = "block";
+      found = true;
+      count++;
+    } else {
+      postElement.style.display = "none";
+    }
+  });
+
+  const noPostsFoundElement = document.getElementById("noPostsFound");
+  if (!found) {
+    noPostsFoundElement.style.display = "block";
+  } else {
+    noPostsFoundElement.style.display = "none";
+  }
+
+  const searchResultElement = document.getElementById("searchResult");
+  if (searchResultElement) {
+    searchResultElement.textContent = `${count} post(s) found`;
   }
 }

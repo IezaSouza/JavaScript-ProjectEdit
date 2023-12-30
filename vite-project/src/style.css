@@ -1,3 +1,20 @@
 img {
   max-width: 50px;
 }
+
+body {
+  background-color: rgb(255, 251, 246);
+}
+
+header {
+  padding: 10px;
+}
+
+#divBusca {
+  border-radius: 5px;
+}
+
+#txtBusca {
+  border-radius: 5px;
+  padding: 2px;
+}

@@ -9,20 +9,23 @@
   <body>
     <header>O Meu Blog</header>
     <div id="divBusca">
-      <input
-        type="text"
-        id="txtBusca"
-        placeholder="Buscar por título do post..."
-      />
-      <span id="resultadoPesquisa">0 post(s) encontrado(s)</span>
-      <button id="btnPesquisar">Pesquisar</button>
+      <input type="search" id="searchInput" placeholder="Search Title" />
+      <button id="searchButton">Pesquisar</button>
+
+      <span id="searchResult"></span>
     </div>
 
     <section id="areaPosts">
-      <article class="post">post</article>
-      <div class="dataPost">23/12/2023, 14:30</div>
+      <article class="post"></article>
+      <footer>
+        <p id="dataPost"></p>
+        <p id="likeCount"></p>
+      </footer>
+      <div id="comentarios"></div>
+      <div id="noPostsFound" style="display: none">
+        <p>No posts found</p>
+      </div>
     </section>
-    <div class="comentarios">comment</div>
 
     <label for="txtNovoPost">Adicionar um novo post:</label>
     <br />
