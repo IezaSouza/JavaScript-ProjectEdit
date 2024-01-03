@@ -21,7 +21,7 @@ type Post = {
     userId: number;
     body: string;
     createdAt: string;
-  };
+  }[];
 };
 
 async function fetchUsers() {
@@ -36,7 +36,7 @@ async function fetchPosts() {
   return posts;
 }
 
-let allPosts = [];
+let allPosts: Post[] = [];
 
 fetchUsers().then((users) => {
   console.log("Dados dos usuários:", users);
@@ -47,8 +47,12 @@ fetchPosts().then((posts) => {
   createPost(allPosts);
 });
 
-async function createPost(posts) {
+async function createPost(posts: Post[]) {
   const areaPosts = document.getElementById("areaPosts");
+
+  if (!areaPosts) {
+    throw new Error();
+  }
 
   const users = await fetchUsers();
 
@@ -77,7 +81,9 @@ async function createPost(posts) {
       const commentBody = document.createElement("p");
       const commentDate = document.createElement("span");
 
-      const user = users.find((user) => user.id === comment.userId);
+      const user = users.find(
+        (user: { id: number }) => user.id === comment.userId
+      );
 
       if (user) {
         const commentUser = document.createElement("div");
@@ -114,6 +120,10 @@ async function createPost(posts) {
 function clearPosts() {
   const areaPosts = document.getElementById("areaPosts");
 
+  if (!areaPosts) {
+    throw new Error();
+  }
+
   while (areaPosts.firstChild) {
     areaPosts.removeChild(areaPosts.firstChild);
   }
@@ -121,8 +131,10 @@ function clearPosts() {
 
 const newPostBtn = document.getElementById("btnAdicionarPost");
 
-newPostBtn.addEventListener("click", () => {
-  const newPostText = document.getElementById("txtNovoPost").value;
+newPostBtn!.addEventListener("click", () => {
+  const newPostText = (
+    document.getElementById("txtNovoPost")! as HTMLInputElement
+  ).value;
 
   if (newPostText.trim() !== "") {
     const newPost = {
@@ -137,7 +149,7 @@ newPostBtn.addEventListener("click", () => {
 
     allPosts.unshift(newPost);
 
-    document.getElementById("txtNovoPost").value = "";
+    (document.getElementById("txtNovoPost") as HTMLInputElement).value = "";
 
     createPost(allPosts);
   } else {
@@ -145,22 +157,22 @@ newPostBtn.addEventListener("click", () => {
   }
 });
 
-const searchIpt = document.getElementById("searchInput");
+const searchIpt = document.getElementById("searchInput") as HTMLInputElement;
 const searchBtn = document.getElementById("searchButton");
 
-searchBtn.addEventListener("click", () => {
+searchBtn!.addEventListener("click", () => {
   const searchTerm = searchIpt.value;
   searchPostsByTitle(searchTerm);
 });
 
-function searchPostsByTitle(searchTerm) {
-  const postElements = document.querySelectorAll("h1");
+function searchPostsByTitle(searchTerm: string) {
+  const postElements = document.querySelectorAll(".post h1");
   let found = false;
   let count = 0;
 
   postElements.forEach((titleElement) => {
     const postTitle = titleElement.textContent?.toLowerCase();
-    const postElement = titleElement.closest(".post");
+    const postElement = titleElement.closest(".post") as HTMLAudioElement;
 
     if (postTitle?.includes(searchTerm.toLowerCase())) {
       postElement.style.display = "block";
@@ -168,6 +180,7 @@ function searchPostsByTitle(searchTerm) {
       count++;
     } else {
       postElement.style.display = "none";
+      found = false;
     }
   });
 
