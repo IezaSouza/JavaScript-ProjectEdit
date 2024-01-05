@@ -35,7 +35,8 @@ header {
   background-color: #fff3ee;
 }
 
-#searchButton {
+#searchButton,
+#btnAdicionarPost {
   color: #20140f;
   background-color: #fff3ee;
   border: 1px solid #9f644c;
@@ -46,7 +47,8 @@ header {
   margin-top: 5px;
 }
 
-#searchButton:hover {
+#searchButton:hover,
+#btnAdicionarPost:hover {
   border: 1.5px solid #9f644c;
   background-color: #fff3ee;
 }
@@ -70,4 +72,41 @@ h1:after {
   margin-right: 30px;
   padding: 15px 20px 15px 20px;
   font-size: 15px;
+}
+
+#newPostBox {
+  margin-top: 5%;
+  border: 1px solid #9f644c;
+  display: inline-block;
+  margin-left: 30px;
+  padding: 20px;
+  background-color: #fff3ee;
+}
+
+#txtNovoPost {
+  width: calc(100% - 40px);
+  border: none;
+  background-color: #fff3ee;
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 15px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+#btnAdicionarPost {
+  width: calc(100% - 40px);
+  padding: 10px;
+  margin: 0;
+  background-color: #fff3ee;
+  border: 1px solid #9f644c;
+  cursor: pointer;
+  font-size: 15px;
+  color: #9f644c;
+}
+
+#divider {
+  width: 100%;
+  margin: 70px 0px 0px 0px;
+  border-bottom: 2px solid #9f644c;
 }
